@@ -1,0 +1,2 @@
+cd labs/lab01 && pnpm exec lint-staged
+
