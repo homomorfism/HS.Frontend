@@ -1,0 +1,37 @@
+name: Lint & Format
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  lint:
+    name: Lint & Format Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+          cache-dependency-path: labs/lab01/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm --dir labs/lab01 install --frozen-lockfile
+
+      - name: Run ESLint
+        run: pnpm --dir labs/lab01 run lint
+
+      - name: Check Prettier formatting
+        run: pnpm --dir labs/lab01 run format:check
